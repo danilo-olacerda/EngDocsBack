@@ -1,0 +1,124 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model company {
+  id             Int      @default(autoincrement()) @id
+  name           String
+  users          user[]
+  dailyPart      dailyPart[]
+  buildDailyPart buildDailyPart[]
+  address        String
+  cep            String
+}
+
+model user {
+  id        Int      @default(autoincrement()) @id
+  name      String
+  email     String   @unique
+  password  String
+  companyId Int
+  company   company @relation(fields: [companyId], references: [id])
+  admin     Boolean  @default(false)
+}
+
+model dailyPart {
+  id            Int      @default(autoincrement()) @id
+  date          DateTime
+  companyId     Int
+  company       company @relation(fields: [companyId], references: [id])
+  buildId       Int
+  build         build @relation(fields: [buildId], references: [id])
+  climate       String
+  numberDays    Int
+  remainingDays Int
+  supply        String
+  contractor    String
+  hired         String
+  occurrences   occurrences[]
+}
+
+model occurrences {
+  id          Int      @default(autoincrement()) @id
+  timeInit    DateTime
+  timeEnd     DateTime
+  item        String
+  description String
+  dailyPartId Int
+  dailyPart   dailyPart @relation(fields: [dailyPartId], references: [id])
+}
+
+model buildDailyOccurrence {
+  id          Int      @default(autoincrement()) @id
+  description String
+  buildDailyPartId Int
+  buildDailyPart   buildDailyPart @relation(fields: [buildDailyPartId], references: [id])
+}
+
+model service {
+  id          Int      @default(autoincrement()) @id
+  description String
+  buildDailyPartId Int
+  buildDailyPart   buildDailyPart @relation(fields: [buildDailyPartId], references: [id])
+}
+
+model buildDailyPart {
+  id                   Int      @default(autoincrement()) @id
+  date                 DateTime
+  companyId            Int
+  company              company @relation(fields: [companyId], references: [id])
+  buildId              Int
+  build                build @relation(fields: [buildId], references: [id])
+  climate              String
+  numberDays           Int
+  remainingDays        Int
+  supply               String
+  contractor           String
+  hired                String
+  effective            effective[]
+  equipiment           equipiment[]
+  buildDailyOccurrence buildDailyOccurrence[]
+  service              service[]
+}
+
+model build {
+  id             Int      @default(autoincrement()) @id
+  name           String
+  buildDailyPart buildDailyPart[]
+  dailyPart      dailyPart[]
+}
+
+model effective {
+  id               Int      @default(autoincrement()) @id
+  buildDailyPartId Int
+  buildDailyPart   buildDailyPart @relation(fields: [buildDailyPartId], references: [id])
+  mod              mod[]
+  moi              moi[]
+}
+
+model mod {
+  id        Int      @default(autoincrement()) @id
+  name      String
+  effectiveId Int
+  effective effective @relation(fields: [effectiveId], references: [id])
+}
+
+model moi {
+  id          Int      @default(autoincrement()) @id
+  name        String
+  effectiveId Int
+  effective   effective @relation(fields: [effectiveId], references: [id])
+}
+
+model equipiment {
+  id               Int      @default(autoincrement()) @id
+  name             String
+  buildDailyPartId Int
+  buildDailyPart   buildDailyPart @relation(fields: [buildDailyPartId], references: [id])
+}
+
