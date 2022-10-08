@@ -29,7 +29,7 @@ model user {
 
 model dailyPart {
   id            Int      @default(autoincrement()) @id
-  date          DateTime
+  date          String
   companyId     Int
   company       company @relation(fields: [companyId], references: [id])
   buildId       Int
@@ -45,8 +45,8 @@ model dailyPart {
 
 model occurrences {
   id          Int      @default(autoincrement()) @id
-  timeInit    DateTime
-  timeEnd     DateTime
+  timeInit    String
+  timeEnd     String
   item        String
   description String
   dailyPartId Int
@@ -69,7 +69,7 @@ model service {
 
 model buildDailyPart {
   id                   Int      @default(autoincrement()) @id
-  date                 DateTime
+  date                 String
   companyId            Int
   company              company @relation(fields: [companyId], references: [id])
   buildId              Int
