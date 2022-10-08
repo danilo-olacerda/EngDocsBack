@@ -3,6 +3,7 @@ import validateSchemaMiddleware from "../middlewares/validateSchemaMiddleware";
 import validateToken from "../middlewares/validateTokenMiddleware";
 import * as dailyController from "../controllers/dailyController";
 import { dailyPartSchema } from "../schemas/dailyPartSchema";
+import { buildDailyPartSchema } from "../schemas/buildDailyPartSchema";
 
 const router = Router();
 
@@ -10,7 +11,8 @@ router.post("/dailyPart", validateToken, validateSchemaMiddleware(dailyPartSchem
 router.get("/dailyPart", validateToken, dailyController.getDailyParts);
 router.get("/dailyPart/:id", validateToken, dailyController.getDailyPartById);
 
-router.post("/buildDailyPart", validateToken);
-router.get("/buildDailyPart", validateToken);
+router.post("/buildDailyPart", validateToken, validateSchemaMiddleware(buildDailyPartSchema), dailyController.createBuildDailyPart);
+router.get("/buildDailyPart", validateToken, dailyController.getBuildDailyParts);
+router.get("/buildDailyPart/:id", validateToken, dailyController.getBuildDailyPartById);
 
 export default router;

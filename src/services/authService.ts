@@ -1,6 +1,6 @@
-import * as authRepository from '../repositories/authRepository';
-import * as userService from './userService';
-import * as companyService from './companyService';
+import * as authRepository from "../repositories/authRepository";
+import * as userService from "./userService";
+import * as companyService from "./companyService";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
@@ -16,7 +16,7 @@ export async function register(newUser: INewUser) {
     const user = await userService.getUserByEmail(email);
 
     if (user) {
-        throw {type: 'conflict', message: 'Email already in use'};
+        throw {type: "conflict", message: "Email already in use"};
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -34,13 +34,13 @@ export async function login(email: string, password: string) {
     const user = await userService.getUserByEmail(email);
 
     if (!user) {
-        throw {type: 'unauthorized', message: 'Invalid email or password'};
+        throw {type: "unauthorized", message: "Invalid email or password"};
     }
 
     const passwordMatch = await bcrypt.compare(password, user.password);
 
     if (!passwordMatch) {
-        throw {type: 'unauthorized', message: 'Invalid email or password'};
+        throw {type: "unauthorized", message: "Invalid email or password"};
     }
 
     const SECRET = process.env.JWT_SECRET as string;

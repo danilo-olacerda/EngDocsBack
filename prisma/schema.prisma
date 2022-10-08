@@ -81,7 +81,7 @@ model buildDailyPart {
   contractor           String
   hired                String
   effective            effective[]
-  equipiment           equipiment[]
+  equipment           equipment[]
   buildDailyOccurrence buildDailyOccurrence[]
   service              service[]
 }
@@ -115,7 +115,7 @@ model moi {
   effective   effective @relation(fields: [effectiveId], references: [id])
 }
 
-model equipiment {
+model equipment {
   id               Int      @default(autoincrement()) @id
   name             String
   buildDailyPartId Int
