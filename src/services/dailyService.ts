@@ -116,3 +116,19 @@ export async function getBuildDailyPartById(id: number, user: IUser) {
     return buildDailyPart;
         
 }
+
+export async function deleteBuildDailyPart(id: number, user: IUser) {
+        
+    const buildDailyPart = await dailyRepository.getBuildDailyPartById(id);
+
+    if (!buildDailyPart) {
+        throw { type: "notFound", message: "Build Daily Part not found" };
+    }
+
+    if (buildDailyPart.companyId !== user.companyId) {
+        throw { type: "unauthorized", message: "User unauthorized" };
+    }
+
+    await dailyRepository.deleteBuildDailyPart(id);
+        
+}

@@ -75,3 +75,15 @@ export async function getBuildDailyPartById(req: Request, res: Response) {
     res.status(200).send(buildDailyPart);
 
 }
+
+export async function deleteBuildDailyPart(req: Request, res: Response) {
+
+    const user: IUser = res.locals.user;
+
+    const id = Number(req.params.id);
+
+    await dailyService.deleteBuildDailyPart(id, user);
+
+    res.sendStatus(200);
+
+}

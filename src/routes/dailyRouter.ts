@@ -14,5 +14,6 @@ router.get("/dailyPart/:id", validateToken, dailyController.getDailyPartById);
 router.post("/buildDailyPart", validateToken, validateSchemaMiddleware(buildDailyPartSchema), dailyController.createBuildDailyPart);
 router.get("/buildDailyPart", validateToken, dailyController.getBuildDailyParts);
 router.get("/buildDailyPart/:id", validateToken, dailyController.getBuildDailyPartById);
+router.delete("/buildDailyPart/:id", validateToken, dailyController.deleteBuildDailyPart);
 
 export default router;

@@ -237,3 +237,58 @@ export async function getBuildDailyPartById(id: number) {
     return buildDailyPart;
 
 }
+
+export async function deleteBuildDailyPart(id: number) {
+
+    await prisma.buildDailyOccurrence.deleteMany({
+        where: {
+            buildDailyPartId: id
+        }
+    });
+
+    await prisma.service.deleteMany({
+        where: {
+            buildDailyPartId: id
+        }
+    });
+
+    await prisma.equipment.deleteMany({
+        where: {
+            buildDailyPartId: id
+        }
+    });
+
+    const effective = await prisma.effective.findMany({
+        where: {
+            buildDailyPartId: id
+        }
+    });
+
+    for (let effect of effective) {
+        await prisma.moi.deleteMany({
+            where: {
+                effectiveId: effect.id
+            }
+        });
+        await prisma.mod.deleteMany({
+            where: {
+                effectiveId: effect.id
+            }
+        });
+    }
+
+    await prisma.effective.deleteMany({
+        where: {
+            buildDailyPartId: id
+        }
+    });
+
+    const buildDailyPart = await prisma.buildDailyPart.delete({
+        where: {
+            id: id
+        }
+    });
+
+    return buildDailyPart;
+
+}
